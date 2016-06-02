@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="initial-scale=1.0">
+<script src="http://maps.googleapis.com/maps/api/js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script>
+
+function initialize() {
+  var mapProp = {
+    center:new google.maps.LatLng(39.9481549,-75.2212261),
+    zoom:14,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+
+<body>
+  <div id="googleMap" style="width:500px;height:500px;"></div>
+  <% if @service_alert %>
+    <p><%= @service_alert %></p>
+    <p><%= @alert_message  %></p>
+    <p><%= @advisory_message %></p>
+    <p><%= @detour_reason %></p>
+    <p><%= @alert_last_updated %></p>
+  <% end %>
+  <script>
+function initialize() {
+  var mapProp = {
+    center:new google.maps.LatLng(39.9481549,-75.2212261),
+    zoom:14,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  google.maps.event.addDomListener(window, 'load', initialize);
+  <% @trolley_coords.each do |coords| %>
+      lat = <%= coords[0] %>
+      lng = <%= coords[1] %>
+      position = new google.maps.LatLng(lat, lng)
+      marker = new google.maps.Marker({
+        position: position,
+        icon:'images/16px-SEPTA.svg.png'
+      });
+    marker.setMap(map);
+  <% end %>
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
+</body>
+
+</html>
+
