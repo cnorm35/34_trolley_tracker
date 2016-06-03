@@ -2,13 +2,12 @@ require 'sinatra'
 require 'net/http'
 require 'json'
 
-#Add alerts and show east / westbound 
+#TODO: show trolley direction
 
 
 get '/' do
   @data = parse_data(trolley_data)
   @trolley_coords = trolley_coords(@data)
-  #@alerts = parse_data(alerts)
   @service_alert = service_alert?
   @alert_message = alert_message
   @advisory_message = advisory_message
@@ -34,13 +33,13 @@ def send_request(url)
   url = URI.parse(url.to_s)
   req = Net::HTTP::Get.new(url)
   res = Net::HTTP.start(url.host, url.port) {|http| http.request(req)}
-
   res.body
-
 end
 
 def alerts
-  alerts = send_request('http://www3.septa.org/hackathon/Alerts/get_alert_data.php?req1=trolley_route_34')
+  alerts = send_request(
+    'http://www3.septa.org/hackathon/Alerts/get_alert_data.php?req1=trolley_route_34'
+  )
   JSON.parse(alerts)
 end
 
